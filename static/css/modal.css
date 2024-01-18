@@ -1,0 +1,39 @@
+.inputParent svg{
+    position: absolute;
+    top: 30%;
+    left:11%;
+    visibility: hidden;
+    
+}
+
+.inputParent span{
+    color: red;
+    margin-top: 2%;
+    transition: all .3s ease-in-out;
+}
+
+.error .fa-exclamation-triangle{
+   visibility: visible;
+   color: red;
+
+}
+.error input{
+    border-color: red;
+}
+
+
+.success .fa-check-circle{
+    visibility: visible;
+    color: rgb(65, 211, 65);
+}
+.success input{
+    border-color:rgb(65, 211, 65);
+}
+
+.error select{
+    border-color: red;
+}
+
+.success select{
+    border-color:rgb(65, 211, 65);
+}

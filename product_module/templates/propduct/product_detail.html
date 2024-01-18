@@ -1,0 +1,173 @@
+{% extends 'Base.html' %}
+{% load thumbnail %}
+{% load render_partial %}
+{% load pollstrags %}
+{% block title %}
+    صفحه {{ product.title }}
+{% endblock %}
+
+{% block contuct %}
+    <section>
+        <div class="container ">
+            <div class="row align-items-center m-2">
+                <div class="col-lg-4 col-md-4">
+                    {% if product.images %}
+                        {% thumbnail product.images "300x300" quality=95 crop='center' as im %}
+                            <img class="img-rounded " src="{{ im.url }}" alt="">
+                        {% endthumbnail %}
+                    {% else %}
+                        <img src="/static/img/fffffff.png" class="img-fluid mx-auto" alt="">
+                    {% endif %}
+                    <div class="m-3">
+                        <p class=><span
+                                class="m-auto text-dark">قیمت این دوره : </span>{{ product.price | three_digits_currency }}
+                        </p>
+                        {% if order.is_pay %}
+                            <button style="color: forestgreen"
+                                    class="btn btn-fefault cart">
+                                <i class="fa fa-shopping-cart"></i>
+                                دوره خریداری شده است
+                            </button>
+
+                        {% else %}
+                            <button style="color: forestgreen" onclick="addProductToOrder({{ product.id }})"
+                                    class="btn btn-fefault cart">
+                                <i class="fa fa-shopping-cart"></i>
+                                ثبت نام در این دوره
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <h2>{{ product.title }}</h2>
+                    <p>{{ product.description }}</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="container ">
+            <div class="col-sm-9 padding-right">
+                {% if request.user.is_authenticated %}
+                    {% if order.is_pay %}
+                        {% for Files in Filess %}
+                            {% for F in Files %}
+                                <div class="large-features-2 style-1 shadow-0 border-0">
+
+                                    <div class="large-features-2-detail">
+                                        <h4>{{ F.index }}</h4>
+                                        <a style="background: cornflowerblue" href="{{ F.File.url }}"
+                                           download>{{ F.title }}</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        {% endfor %}
+                    {% else %}
+                        <p>دوره خریداری نشده است</p>
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-warning">
+                        برای مشاهده می بایست <a href="{% url 'register' %}">لاگین</a> کنید
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <div class="col-sm-3 padding-right">
+                <div class="left-sidebar">
+
+                    {% for banner in banners %}
+                        <div class="shipping text-center m-2"><!--shipping-->
+                            <a href="{{ banner.url }}">
+                                <img src="{{ banner.image.url }}" alt="">
+                            </a>
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+        </div>
+    </section>
+    <div class="container my-5 py-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h4 class="text-center mb-4 pb-2"> نظرات :{{ comments.count }}</h4>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex flex-start">
+                                    {% for comment in comments %}
+                                        {% thumbnail comment.User.avatar '121x86' quality=95 crop='center' as im %}
+                                            <img class="img-rounded m-1" src="{{ im.url }}">
+                                        {% endthumbnail %}
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p class="mb-1">
+                                                    {{ comment.User }} <span
+                                                        class="small">{{ comment.create_date | time }}</span>
+                                                </p>
+                                                <a class="btn btn-primary" onclick="fillParentId({{ comment.id }})"><i
+                                                        class="fa fa-reply"></i>پاسـخ</a>
+                                            </div>
+                                            <p class="small mb-0">
+                                                {{ comment.text }}
+                                            </p>
+                                        </div>
+                                        {% for Subcomment in comment.productcomment_set.all %}
+
+                                            <div class="d-flex flex-start mt-4">
+                                                <a class="me-3" href="#">
+                                                    {% thumbnail Subcomment.User.avatar '121x86' quality=95 crop='center' as im %}
+                                                        <img class="img-rounded m-1" src="{{ im.url }}">
+                                                    {% endthumbnail %}
+                                                </a>
+                                                <div class="flex-grow-1 flex-shrink-1">
+                                                    <div>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <p class="mb-1">
+                                                                {{ Subcomment.User }} <span
+                                                                    class="small">- 4 hours ago</span>
+                                                            </p>
+                                                        </div>
+                                                        <p class="small mb-0">
+                                                            {{ Subcomment.text }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        </div>
+                                        </div>
+                                        </div>
+                                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="replay-box col-sm-12" id="comment_form">
+        {% if request.user.is_authenticated %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>نظـر خود را بنویسیـد</h2>
+                    <div class="text-area">
+                        <input type="hidden" id="parent_id" value="">
+                        <div class="blank-arrow">
+                            <label>متن پیام</label>
+                        </div>
+                    </div>
+                    <span>*</span>
+                    <textarea name="message" class="" rows="11" id="commentText"></textarea>
+                    <a class="btn btn-primary" onclick="sendProductComment({{ product.id }})">ارسـال نظـر</a>
+                </div>
+            </div>
+            </div>
+
+        {% else %}
+            <div class="alert alert-warning">
+                برای درج نظر می بایست <a href="{% url 'register' %}">لاگین</a> کنید
+            </div>
+        {% endif %}
+
+{% endblock %}

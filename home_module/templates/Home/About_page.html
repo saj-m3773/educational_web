@@ -1,0 +1,32 @@
+{% extends 'Base.html' %}
+
+{% block title %}
+ درباره ما
+{% endblock %}
+{% block contuct %}
+<section>
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="about-content">
+                            <h2>ما کی هستیم؟</h2>
+                        <p>{{ site_setting.about_us_text }}</p>
+                            <ul class="our-team-profile ts-light-bg">
+                            {% for SocialNetwork in SocialNetworks %}
+                              <li><a href="{{ SocialNetwork.url }}"><i class="fa fa-{{ SocialNetwork.title }}"></i></a></li>
+                            {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <img src="/static/img/on-page.png" class="img-fluid mx-auto" alt="">
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+{% endblock %}

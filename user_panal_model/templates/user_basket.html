@@ -1,0 +1,12 @@
+{% extends 'Base.html' %}
+{% load pollstrags %}
+
+{% block title %}
+    سبد خرید
+{% endblock %}
+
+{% block contuct %}
+       <div id="order-detail-content">
+        {% include 'user_basket_content.html' %}
+    </div>
+{% endblock %}

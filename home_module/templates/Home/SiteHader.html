@@ -1,0 +1,72 @@
+
+
+<div class="header exchange-logo">
+    <div class="container topbar1 po-relative rounded-3">
+        <nav class="navbar navbar-expand-lg header-nav-bar d-flex flex-row-reverse">
+            <a href="{% url 'home_page' %}" class="navbar-brand d-flex justify-content-center align-items-center">
+                <img src="/static/img/logo.png" class="default-logo" style="width:80% ;" alt="Themex">
+                <img src="/static/img/logo-light.png" class="sticky-logo" style="width:80% ;" alt="Themex">
+
+            </a>
+
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="ti-align-right"></span></button>
+            <div class="collapse navbar-collapse hover-dropdown font-14   " id="navigation">
+                <ul class="navbar-nav  ">
+                    <li class="nav-item dropdown nav-dropdown">
+                        <a class="nav-link " href="{% url 'home_page' %}" id="nav-dropdown">خانه </a>
+
+                    </li>
+
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="services.html">هم کاری با
+                        ما </a>
+
+                    </li>
+
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="{% url 'product' %}">
+                        آموزش ها </a>
+
+                    </li>
+
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="{% url 'about_page' %}">درباره
+                        ما </a>
+
+                    </li>
+
+
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item dropdown nav-dropdown">
+                            <a class="nav-link dropdown-toggle" href="{% url 'dashboard' %}"> پنل کاربری </a>
+                        </li>
+                        <li class="nav-item dropdown nav-dropdown">
+                            <a class="nav-link dropdown" href="{% url 'user_basket_page' %}">سبد خرید </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{% url 'loginout' %}"> خروج </a>
+                        </li>
+
+                    {% else %}
+                        <a class="nav-link dropdown-toggle" href="{% url 'register' %}"> ورود </a>
+                    {% endif %}
+
+
+                    <li class="nav-item dropdown nav-dropdown">
+
+                        <select id="selTheme" >
+                            <option class="nav-item dropdown" value="auto">اتوماتیک</option>
+                            <option value="light">روشن</option>
+                            <option value="dark">تاریک</option>
+                        </select>
+
+
+                    </li>
+
+                </ul>
+
+
+            </div>
+        </nav>
+    </div>
+</div>

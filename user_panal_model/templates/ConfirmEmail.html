@@ -1,0 +1,23 @@
+{% extends 'Base.html' %}
+
+
+{% block title %}
+     فعال سازی ایمیل
+{% endblock %}
+{% block contuct %}
+	  <div class="col-md-3" dir="rtl">
+        <div class="box-login">
+            <h2 style="text-align: center; font-size: 28px">تایید ایمیل</h2>
+            <form method="post">
+                {% csrf_token %}
+                <label for="{{ Confirm_Email_Form.Email_Code.id_for_label }}">{{ Confirm_Email_Form.Email_Code.label }}</label>
+                {{ Confirm_Email_Form.Email_Code }}
+                {% for error in Confirm_Email_Form.Email_Code.errors %}
+                    <p style="color: red;"><i class="fa fa-exclamation-circle"></i> {{ error }} </p>
+                {% endfor %}
+                <br>
+                <button type="submit" class="btn btn-block btn-success">تایید کد</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

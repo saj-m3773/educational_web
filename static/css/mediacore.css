@@ -1,0 +1,54 @@
+@media (max-width:778px) {
+    .img-profile {
+        width: 15em ;
+        height: 15em ;
+    }
+    .accord{
+        margin: 0 40%;
+    }
+    .body {
+        padding: 0 3%;
+        font-size: 40%;
+        width:100% ;
+        margin:2% 20%;
+       
+    }
+     .text-profile {
+            box-sizing: border-box;
+            width: 40%;
+            position: absolute;
+            right: 11%;
+            top: 8%;  
+        }
+
+}
+/*@media (max-width: 470px) {*/
+/*    .img-profile {*/
+/*        width: 8em ;*/
+/*        height: 8em ;*/
+/*    }*/
+/*    .text-profile {*/
+/*        box-sizing: border-box;*/
+/*        width: 40%;*/
+/*        position: absolute;*/
+/*        right: 11%;*/
+/*        top: 8%;*/
+/*    }*/
+/*    .title{*/
+/*        box-shadow: none;*/
+/*        font-size: 30%;*/
+
+/*    }*/
+/*    .body {*/
+/*        padding: 0 ;*/
+/*        font-size: 30%;*/
+/*        width:100% ;*/
+/*        margin:2% 20%;*/
+
+/*    }*/
+/*    .accord{*/
+/*        width: 60%;*/
+/*        text-align: center;*/
+/*        font-size: 25%;*/
+/*    }*/
+/*}*/

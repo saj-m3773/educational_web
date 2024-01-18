@@ -1,0 +1,18 @@
+{% load  pollstrags %}
+
+<div class="portfolio-wrap portfolio-inner">
+    <a href="{% url 'product-d' slug=product.slug %}"><img src="{{ product.images.url }}" alt="project"></a>
+    <div class="label">
+        <div class="label-text">
+            <a href="{% url 'product-d' slug=product.slug %}"
+               class="text-title">{{ product.title }}</a>
+            <span class="lead-i">{{ product.price | three_digits_currency }}</span>
+
+        </div>
+        <div class="label-bg">
+            <p class="m-t-40 m-r-40"><a href="{% url 'master_profile' pk=product.author.id %}"
+                  class="fa fa-pencil">{{ product.author.get_full_name }}</a></p>
+        </div>
+    </div>
+
+</div>

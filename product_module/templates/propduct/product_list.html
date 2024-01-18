@@ -1,0 +1,72 @@
+{% extends 'Base.html' %}
+{% load thumbnail %}
+{% load render_partial %}
+{% load pollstrags %}
+
+
+{% block title %}
+    محصولات
+{% endblock %}
+
+{% block contuct %}
+    <section id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 padding-right">
+                    <div class="portfolio-sort">
+                        <ul class="sorting clearfix center-grid">
+
+                            <li class="sort-btn active" data-filter="*">همه</li>
+                            {% render_partial 'product_module.views.product_categories_component' %}
+
+                        </ul>
+
+                    </div>
+
+                    <div class="row portfolio-gallary" style="position: relative; height: 562.5px;">
+                        {% for product in products %}
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 port-item {{ product.category.url_title }}"
+                                 style="position: absolute; right: 0%; top: 0px;">
+                                <div class="portfolio-wrap portfolio-inner">
+                                    <a href="{% url 'product-d' slug=product.slug %}">
+                                        {% thumbnail product.images "240x250" quality=95 as im %}
+                                            <img src="{{ im.url }}" alt="">
+                                        {% endthumbnail %}</a>
+                                    <div class="label">
+                                        <div class="label-text">
+                                            <a href="{% url 'product-d' slug=product.slug %}"
+                                               class="text-title">{{ product.title }}</a>
+                                            <span class="lead-i">{{ product.price | three_digits_currency }}</span>
+
+                                        </div>
+                                        <div class="label-bg">
+                                            <p class="m-t-40 m-r-40"><a
+                                                    href="{% url 'master_profile' pk=product.author.id %}"
+                                                    class="fa fa-pencil">{{ product.author.get_full_name }}</a></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="left-sidebar">
+                        {% for banner in banners %}
+                            <div class="shipping text-center m-2">
+                                <a href="{{ banner.url }}">
+                                    <img src="{{ banner.image.url }}" alt="">
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends 'Base.html' %}
+{% load social_share %}
+{% load render_partial %}
+{% load pollstrags %}
+{% load thumbnail %}
+{% block title %}
+
+    جزِییات مقاله
+{% endblock %}
+
+{% block contuct %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="blog-post-area">
+                        <div class="single-blog-post">
+                            <h3>  {{ article.title }} </h3>
+                            <div class="post-meta">
+                                <ul>
+
+                                    <li><i class="fa fa-clock-o"></i>{{ article.get_jalali_create_time }}</li>
+                                    <li><i class="fa fa-calendar"></i>{{ article.create_data | show_jalali_date }}
+                                    </li>
+                                </ul>
+
+                            </div>
+                            <a href="">
+
+                                {% thumbnail article.image "650x320" quality=95 crop='center' as im %}
+                                    <img class="m-3 img-rounded" src="{{ im.url }}">
+                                {% endthumbnail %}
+                            </a>
+                            <p class="text-dark"> {{ article.short_description }}..</p>
+                            <hr>
+                            <hr>
+                            <p> {{ article.text }}</p>
+
+                        </div>
+                    </div><!--/blog-post-area-->
+
+                    <div class="rating-area">
+                        <ul class="ratings">
+
+
+                            <li class="color">( نظر :{{ comments_count }} )</li>
+                        </ul>
+                        <ul class="tag">
+                            {% for tag in tags %}
+                            	  <li><a class="color" href="{% url 'articles-tag-list' tags=tag.slug %}"> <span>#</span>{{ tag.coption }}</a></li>
+                            {% endfor %}
+
+                        </ul>
+                    </div><!--/rating-area-->
+
+                    <div class="media commnets">
+                        <a class="pull-right" href="{% url 'master_profile' pk=article.author.id %}">
+                            {% if article.author and article.author.avatar %}
+                                {% thumbnail article.author.avatar '121x86' quality=95 crop='center' as im %}
+                                    <img class="img-rounded" src="{{ im.url }}">
+                                {% endthumbnail %}
+                            {% else %}
+                                <img class="media-object" src="/static/img/blog/socials.png" alt="">
+
+                            {% endif %}
+
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading"> نام نویسنده:{{ article.author }}</h4>
+                            {% if article.author.short_descriptio %}
+                                <p>{{ article.author.short_descriptio }}</p>
+                            {% endif %}
+                            <div class="blog-socials">
+                                <ul>
+
+                                    {% post_to_facebook object_or_url %}
+                                    {% post_to_twitter object_or_url %}
+                                    {% post_to_telegram object_or_url %}
+                                    {% post_to_whatsapp object_or_url %}
+{#                                    <li><a href=""><i class="fa fa-facebook"></i></a></li>#}
+{#                                    <li><a href=""><i class="fa fa-twitter"></i></a></li>#}
+{#                                    <li><a href=""><i class="fa fa-dribbble"></i></a></li>#}
+{#                                    <li><a href=""><i class="fa fa-google-plus"></i></a></li>#}
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--Comments-->
+                    <div class="response-area" id="comment">
+                        <h4> نظرات :{{ comments_count }}</h4>
+                        <ul class="media-list">
+                            {% for comment in comments %}
+                                {% if comment.is_active == True %}
+                                    <li class="media ">
+                                        {% if article.author.avatar %}
+                                            {% thumbnail comment.user.avatar '121x86' quality=95 crop='center' as im %}
+                                                <img class="img-rounded m-1" src="{{ im.url }}">
+                                            {% endthumbnail %}
+                                        {% else %}
+                                            <img class="media-object" src="/static/img/blog/Customer.jpg" alt="">
+                                        {% endif %}
+                                        <div class="media-body">
+                                            <ul class="sinlge-post-meta">
+                                                {{ comment.uesr }}
+                                                <li><i class="fa fa-clock-o"></i> {{ comment.create_date | time }}</li>
+                                                <li>
+                                                    <i class="fa fa-calendar"></i> {{ comment.create_date |show_jalali_date }}
+                                                </li>
+                                            </ul>
+                                            <p>{{ comment.text }}</p>
+                                            <a class="btn btn-primary" onclick="fillParentIdA({{ comment.id }})"><i
+                                                    class="fa fa-reply"></i>پاسـخ</a>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                                {% for Subcomment in comment.articlecomment_set.all %}
+                                    {% if Subcomment.is_active == True %}
+                                        <li class="media second-media">
+                                            <a class="pull-right" href="#">
+                                                <img class="media-object" src="{{ Subcomment.user.avatar.url }}" alt="">
+                                            </a>
+                                            <div class="media-body">
+                                                <ul class="sinlge-post-meta">
+                                                    <li><i class="fa fa-user"></i> {{ Subcomment.uesr }}</li>
+                                                    <li>
+                                                        <i class="fa fa-clock-o"></i> {{ Subcomment.create_date | time }}
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-calendar"></i> {{ Subcomment.create_date |show_jalali_date }}
+                                                    </li>
+                                                </ul>
+                                                <p>{{ Subcomment.text }}</p>
+
+                                            </div>
+                                        </li>
+
+                                    {% endif %}
+
+
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                        <div class="replay-box" id="comment_formA">
+                            {% if request.user.is_authenticated %}
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h2>نظـر خود را بنویسیـد</h2>
+                                        <form class="text-area">
+                                            {% csrf_token %}
+                                            <input type="hidden" id="parent_idA" value="">
+                                            <div class="blank-arrow">
+                                                <label>متن پیام</label>
+                                            </div>
+
+                                            <textarea name="message" rows="11" id="commentTextA"></textarea>
+                                            <button type="submit" class="btn btn-primary" id=""
+                                                    onclick="sendArticleComment({{ article.id }})">ارسـال
+                                                نظـر
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    برای درج نظر می بایست <a href="{% url 'rigister' %}">وارد</a> کنید
+                                </div>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'Base.html' %}
+{% load thumbnail %}
+{% load pollstrags %}
+
+{% block title %}
+    صفحه اصلی
+{% endblock %}
+{% block contuct %}
+
+    <section id="portfolio">
+        <div class="col-lg-12 col-md-12 mb-4">
+            <h2>آخرین آموزش ها: </h2>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                    <a class="d-flex justify-content-end" href="{% url 'product' %}">
+                        <button class="btn btn-primary order-3"> آموزش های بیشتر ...</button>
+                    </a>
+                     <div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="row portfolio-gallary" style="position: relative; height: 562.5px;">
+                        {% for product in latest_products %}
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 port-item "
+                                 style="position: absolute; right: 0%; top: 0px;">
+                                <div class="portfolio-wrap portfolio-inner">
+                                    <a href="{% url 'product-d' slug=product.slug %}"><img
+                                            src="{{ product.images.url }}" alt="project"></a>
+                                    <div class="label">
+                                        <div class="label-text">
+                                            <a href="{% url 'product-d' slug=product.slug %}"
+                                               class="text-title">{{ product.title }}</a>
+                                            <span class="lead-i">{{ product.price |three_digits_currency }}</span>
+
+                                        </div>
+                                        <div class="label-bg">
+                                            <p class="m-t-40 m-r-40"><a
+                                                    href="{% url 'master_profile' pk=product.author.id %}"
+                                                    class="fa fa-pencil">{{ product.author.get_full_name }}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--/NewProduct_items-->
+    </section>
+    <section>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-4">
+                    <h2>آخرین مقالات</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for latest_article in latest_articles %}
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="large-features-2 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200">
+                            <div class="large-features-2-item">
+                                <div class="large-features-2-icon">
+                                    {% thumbnail latest_article.image "100x100" quality=95 crop='center' as im %}
+                                        <img src="{{ im.url }}" alt="">
+                                    {% endthumbnail %}
+                                </div>
+                                <div class="large-features-2-content">
+                                    <h4>{{ latest_article.title }}</h4>
+                                    <p>{{ latest_article.short_description }}</p>
+                                    <a href="{% url 'articles_detail' pk=latest_article.id %}" class="read-more">ادامه
+                                        مطلب<i class="ti-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+    <section id="portfolio">
+        <h1 class="new_product"> دوره های محبوب:</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="row portfolio-gallary" style="position: relative; height: 562.5px;">
+                        {% for most_visit_product in most_visit_products %}
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 port-item "
+                                 style="position: absolute; right: 0%; top: 0px;">
+                                <div class="portfolio-wrap portfolio-inner">
+                                    <a href="{% url 'product-d' slug=most_visit_product.slug %}"><img
+                                            src="{{ most_visit_product.images.url }}" alt="project"></a>
+                                    <div class="label">
+                                        <div class="label-text">
+                                            <a href="{% url 'product-d' slug=most_visit_product.slug %}"
+                                               class="text-title">{{ most_visit_product.title }}</a>
+                                            <span class="lead-i">{{ most_visit_product.price |three_digits_currency }}</span>
+
+                                        </div>
+                                        <div class="label-bg">
+                                            <p class="m-t-40 m-r-40"><a
+                                                    href="{% url 'master_profile' pk=most_visit_product.author.id %}"
+                                                    class="fa fa-pencil">{{ most_visit_product.author.get_full_name }}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

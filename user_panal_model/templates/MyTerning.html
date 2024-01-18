@@ -1,0 +1,49 @@
+{% extends 'Base.html' %}
+{% load render_partial %}
+
+
+
+{% block title %}
+    دوره های من
+{% endblock %}
+
+{% block contuct %}
+    <section id="portfolio">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="row portfolio-gallary" style="position: relative; height: 562.5px;">
+                        {% for detail in order.orderdetail_set.all %}
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 port-item"
+                                 style="position: absolute; right: 0%; top: 0px;">
+                                <div class="portfolio-wrap portfolio-inner">
+                                    <a href="{% url 'product-d' slug=detail.product.slug %}"><img
+                                            src="{{ detail.product.images.url }}" alt="project"></a>
+                                    <div class="label">
+                                        <div class="label-text">
+                                            <a href="{% url 'product-d' slug=detail.product.slug %}"
+                                               class="text-title">{{ detail.product.title }}</a>
+
+
+                                        </div>
+                                        <div class="label-bg">
+                                            <p class="m-t-40 m-r-40"><a
+                                                    href="{% url 'master_profile' pk=detail.product.author.id %}"
+                                                    class="fa fa-pencil">{{ detail.product.author.get_full_name }}</a></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
